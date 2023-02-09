@@ -2,8 +2,6 @@
 
 # Compiler
 CC = gcc
-# Compiler Flags
-CFLAGS = -Wall -Wextra -Werror
 
 # Where are your source files?
 SRCDIRS = src src2
@@ -25,24 +23,21 @@ BINDIR = bin
 # Where do you want to put your object files?
 OBJDIR = obj
 
-# Shell command for making directories. Default: mkdir
-MKDIR = mkdir
-
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 SOURCES = $(wildcard $(SRCDIRS:%=%/*.c))
-INCLUDES = $(INCDIRS:%=-I%)
-LIBPATHS = $(LIBDIRS:%=-L%)
-LIBS = $(LIBNAMES:%=-l%)
+INCLUDES = $(addprefix -I, $(INCDIRS))
+LDFLAGS = $(addprefix -L, $(LIBDIRS))
+LDLIBS = $(addprefix -l, $(LIBNAMES))
 OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 
 TARGET = $(BINDIR)/$(NAME)
 
 .PHONY: all
 all: $(OBJECTS)
-	$(CC) $^ $(LIBPATHS) $(LIBS) -o $(TARGET)
+	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $(TARGET)
 
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: clean
 clean:

@@ -2,8 +2,6 @@
 
 # Compiler
 CC = gcc
-# Compiler flags
-#CFLAGS = -Wall -Wextra -Werror
 
 # Where are your source files?
 SRCDIRS = src
@@ -23,34 +21,21 @@ NAME = $(notdir $(CURDIR))
 # Where do want to store the object files? Default: obj
 OBJDIR = obj
 
-# Shell command for removing files. Default: rm
-RM = rm
-# Shell command for making directories. Default: mkdir
-MKDIR = mkdir
-
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 TARGET = lib$(NAME).a
 SOURCES = $(wildcard $(SRCDIRS)/*.c)
-INCLUDES = $(INCDIRS:%=-I%)
-LIBPATHS = $(LIBDIRS:%=-L%)
-LIBS = $(LIBNAMES:%=-l%)
-OBJECTS = $(SOURCES:$(SRCDIRS)/%.c=$(OBJDIR)/%.o)
+INCLUDES = $(addprefix -I, $(INCDIRS))
+LDFLAGS = $(addprefix -L, $(LIBDIRS))
+LIBS = $(addprefix -l, $(LIBNAMES))
+OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 
 .PHONY: all
-all: build
-	$(AR) $(ARFLAGS) $(LIBS) $(TARGET) $(OBJECTS)
+all: $(OBJECTS)
+	$(AR) $(ARFLAGS) $(LIBS) $(TARGET) $?
 
-.PHONY: build
-build: $(OBJECTS)
-
-$(OBJECTS): $(SOURCES) $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
+$(OBJDIR)/%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 .PHONY: clean
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
-
-.PHONY: directories
-directories: $(OBJDIR)
-$(OBJDIR):
-	$(MKDIR) $@
