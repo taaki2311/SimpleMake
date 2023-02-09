@@ -25,35 +25,25 @@ BINDIR = bin
 # Where do you want to put your object files?
 OBJDIR = obj
 
-# Shell command for removing files. Default: rm
-RM = rm
 # Shell command for making directories. Default: mkdir
 MKDIR = mkdir
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIRS)/*.c)
+SOURCES = $(wildcard $(SRCDIRS:%=%/*.c))
 INCLUDES = $(INCDIRS:%=-I%)
-OBJECTS = $(SOURCES:$(SRCDIRS)/%.c=./obj/%.o)
 LIBPATHS = $(LIBDIRS:%=-L%)
 LIBS = $(LIBNAMES:%=-l%)
+OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 
 TARGET = $(BINDIR)/$(NAME)
 
 .PHONY: all
-all: build $(BINDIR)
-	$(CC) $(OBJECTS) $(LIBPATHS) $(LIBS) -o $(TARGET)
+all: $(OBJECTS)
+	$(CC) $^ $(LIBPATHS) $(LIBS) -o $(TARGET)
 
-.PHONY: build
-build: $(OBJECTS)
-
-$(OBJECTS): $(SOURCES) $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
+$(OBJDIR)/%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: clean
 clean:
 	$(RM) $(OBJECTS) $(BINDIR)/*
-
-$(OBJDIR):
-	$(MKDIR) $@
-$(BINDIR):
-	$(MKDIR) $@

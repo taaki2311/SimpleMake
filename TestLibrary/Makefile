@@ -3,20 +3,15 @@
 # Compiler
 CC = gcc
 # Compiler flags
-CFLAGS = -Wall -Wextra -Werror
-
-# Archiver
-AR = ar
-# Archiver Flags
-AFLAGS = rcs
+#CFLAGS = -Wall -Wextra -Werror
 
 # Where are your source files?
 SRCDIRS = src
 # Where are your header files? (Including the ones for external libraries)
 INCDIRS = inc
-# Where are your external libraries? (Ignore)
-#LIBDIRS =
-# What are you libraries named?
+# Where are your external libraries?
+LIBDIRS =
+# What are your libraries named?
 LIBNAMES =
 
 # What do you want to name your library?
@@ -36,12 +31,14 @@ MKDIR = mkdir
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 TARGET = lib$(NAME).a
 SOURCES = $(wildcard $(SRCDIRS)/*.c)
-OBJECTS = $(SOURCES:$(SRCDIRS)/%.c=$(OBJDIR)/%.o)
 INCLUDES = $(INCDIRS:%=-I%)
+LIBPATHS = $(LIBDIRS:%=-L%)
+LIBS = $(LIBNAMES:%=-l%)
+OBJECTS = $(SOURCES:$(SRCDIRS)/%.c=$(OBJDIR)/%.o)
 
 .PHONY: all
-all: build # $(LIBPATHS) is somehow not needed
-	$(AR) $(AFLAGS) $(LIBS) $(TARGET) $(OBJECTS)
+all: build
+	$(AR) $(ARFLAGS) $(LIBS) $(TARGET) $(OBJECTS)
 
 .PHONY: build
 build: $(OBJECTS)
@@ -53,5 +50,7 @@ $(OBJECTS): $(SOURCES) $(OBJDIR)
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
 
+.PHONY: directories
+directories: $(OBJDIR)
 $(OBJDIR):
 	$(MKDIR) $@

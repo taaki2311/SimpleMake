@@ -4,5 +4,5 @@
 
 void hello_from_project(void)
 {
-    super_print(hello_world);
+    super_print("Hello from Project!");
 }

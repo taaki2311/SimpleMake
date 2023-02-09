@@ -8,14 +8,14 @@ CFLAGS = -Wall -Wextra -Werror
 # Archiver
 AR = ar
 # Archiver Flags
-AFLAGS = rcs
+ARFLAGS = rcs
 
 # Where are your source files?
 SRCDIRS = .
 # Where are your header files? (Including the ones for external libraries)
 INCDIRS = . inc/* ../TestLibrary/inc
-# Where are your external libraries? (Ignore)
-#LIBDIRS = ../TestLibrary
+# Where are your external libraries?
+LIBDIRS = ../TestLibrary
 # What are your libraries named?
 LIBNAMES = TestLibrary
 
@@ -28,19 +28,22 @@ NAME = $(notdir $(CURDIR))
 # Where do want to store the object files? Default: obj
 OBJDIR = obj
 
-
+# Shell command for removing files. Default: rm
+RM = rm
+# Shell command for making directories. Default: mkdir
+MKDIR = mkdir
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 TARGET = lib$(NAME).a
 SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(INCDIRS:%=-I%)
-#LIBPATHS = $(LIBDIRS:%=-L%)
+LIBPATHS = $(LIBDIRS:%=-L%)
 LIBS = $(LIBNAMES:%=-l%)
 OBJECTS = $(SOURCES:$(SRCDIRS)/%.c=$(OBJDIR)/%.o)
 
 .PHONY: all
-all: build # $(LIBPATHS) is somehow not needed
-	$(AR) $(AFLAGS) $(LIBS) $(TARGET) $(OBJECTS)
+all: build
+	$(AR) $(ARFLAGS) $(LIBS) $(TARGET) $(OBJECTS)
 
 .PHONY: build
 build: $(OBJECTS)
@@ -52,5 +55,7 @@ $(OBJECTS): $(SOURCES) $(OBJDIR)
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
 
+.PHONY: directories
+directories: $(OBJDIR)
 $(OBJDIR):
 	$(MKDIR) $@
