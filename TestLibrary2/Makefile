@@ -27,7 +27,7 @@ SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIRS))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LIBS = $(addprefix -l, $(LIBNAMES))
-OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
 
 .PHONY: all
 all: $(OBJECTS)

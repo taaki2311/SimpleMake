@@ -24,11 +24,11 @@ BINDIR = bin
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIRS:%=%/*.c))
+SOURCES = $(wildcard $(addsuffix /*.c, $(SRCDIRS)))
 INCLUDES = $(addprefix -I, $(INCDIRS))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
-OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
 
 TARGET = $(BINDIR)/$(NAME)
 
