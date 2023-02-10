@@ -1,16 +1,16 @@
-# Edit this section to suit your project
+# Edit this section to suit your library
 
 # Compiler
 CC = gcc
 
 # Where are your source files?
-SRCDIRS = src src2
+SRCDIRS = src
 # Where are your header files? (Including the ones for external libraries)
-INCDIRS = inc ../TestLibrary/inc ../TestLibrary2
+INCDIRS = inc
 # Where are your external libraries?
-LIBDIRS = ../TestLibrary ../TestLibrary2
+LIBDIRS =
 # What are your libraries named?
-LIBNAMES = TestLibrary TestLibrary2
+LIBNAMES =
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root directory
@@ -18,27 +18,24 @@ NAME = $(notdir $(CURDIR))
 # Note: The actual file will be called 'lib<NAME>.a', however when you are
 # linking it in a project the compiler will need just '-l<NAME>'.
 
-# Where do you want to put your binary executable?
-BINDIR = bin
-# Where do you want to put your object files?
+# Where do want to store the object files? Default: obj
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(addsuffix /*.c, $(SRCDIRS)))
+TARGET = lib$(NAME).a
+SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIRS))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
-LDLIBS = $(addprefix -l, $(LIBNAMES))
+LIBS = $(addprefix -l, $(LIBNAMES))
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
-
-TARGET = $(BINDIR)/$(NAME)
 
 .PHONY: all
 all: $(OBJECTS)
-	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $(TARGET)
+	$(AR) $(ARFLAGS) $(LIBS) $(TARGET) $?
 
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS) $(BINDIR)/*
+	$(RM) $(OBJECTS) $(TARGET)
