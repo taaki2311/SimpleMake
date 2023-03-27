@@ -4,9 +4,9 @@
 CC = gcc
 
 # Where are your source files?
-SRCDIR = src
+SRCDIRS = src
 # Where are your header files? (Including the ones for external libraries)
-INCDIR = inc
+INCDIRS = inc
 # Where are your external libraries?
 LIBDIRS =
 # What are your libraries named?
@@ -24,11 +24,11 @@ OBJDIR = obj
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 STATIC = lib$(NAME).a
 DYNAMIC = lib$(NAME).so
-SOURCES = $(wildcard $(SRCDIR)/*.c)
-INCLUDES = $(addprefix -I, $(INCDIR))
+SOURCES = $(wildcard $(SRCDIRS)/*.c)
+INCLUDES = $(addprefix -I, $(INCDIRS))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LIBS = $(addprefix -l, $(LIBNAMES))
-OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
 
 .PHONY: all static dynamic clean directories
 all: static dynamic
@@ -41,12 +41,12 @@ dynamic: $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS)
 	$(CC) $? -shared $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@
 
-$(OBJECTS): $(SOURCES)
+$(OBJDIR)/%.o: %.c
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
 
-directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
-$(SRCDIR) $(INCDIR) $(OBJDIR):
-	mkdir $@
+directories: $(SRCDIRS) $(INCDIRS) $(OBJDIR)
+$(SRCDIRS) $(INCDIRS) $(OBJDIR):
+	$(MKDIR) $@
