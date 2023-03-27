@@ -16,13 +16,12 @@ LIBDIRS =
 LIBNAMES = 
 
 # What do you want to name your library?
-# Default: $(notdir $(CURDIR)), this makes the name the same as the root directory
+# Default: $(notdir $(CURDIR)), this makes the name the same as the root
+# directory
 NAME = $(notdir $(CURDIR))
 # Note: The actual file will be called 'lib<NAME>.a', however when you are
 # linking it in a project the compiler will need just '-l<NAME>'.
 
-# Where do you want to put your execary executable?
-EXECDIR = exec
 # Where do you want to put your object files?
 OBJDIR = obj
 
@@ -33,23 +32,25 @@ INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
-OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
-TARGET = $(EXECDIR)/$(NAME)
+OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
 
-.PHONY: all clean execute directories
+ifeq ($(OS), Windows_NT)
+	TARGET = $(NAME).exe
+else
+	TARGET = $(NAME)
+endif
+
+.PHONY: all clean directories
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJECTS): $(SOURCES)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 clean:
-	$(RM) $(OBJECTS) $(EXECDIR)/*
+	$(RM) $(OBJECTS) $(TARGET)
 
-execute:
-	./$(EXECDIR)/$(NAME)
-
-directories: $(SRCDIR) $(INCDIR) $(OBJDIR) $(EXECDIR)
-$(SRCDIR) $(INCDIR) $(OBJDIR) $(EXECDIR):
+directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
+$(SRCDIR) $(INCDIR) $(OBJDIR):
 	mkdir $@

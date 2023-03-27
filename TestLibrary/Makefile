@@ -22,20 +22,34 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-TARGET = lib$(NAME).a
+ifeq ($(OS), Windows_NT)
+	EXTENTION = dll
+else
+	EXTENTION = so
+endif
+
+STATIC = lib$(NAME).a
+DYNAMIC = lib$(NAME).$(EXTENTION)
 SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIRS))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LIBS = $(addprefix -l, $(LIBNAMES))
-OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
-.PHONY: all
-all: $(OBJECTS)
-	$(AR) $(ARFLAGS) $(LIBS) $(TARGET) $?
+.PHONY: all static dynamic
+all: static dynamic
 
-$(OBJDIR)/%.o: %.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
+static: $(STATIC)
+$(STATIC): $(OBJECTS)
+	$(AR) $(ARFLAGS) $(LIBS) $@ $?
+
+dynamic: $(DYNAMIC)
+$(DYNAMIC): $(OBJECTS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -shared -o $@ $?
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS) $(TARGET)
+	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
