@@ -8,10 +8,8 @@ SRCDIR = src
 # Where are your internal header files?
 INCDIR = inc
 
-# Where are your external source files?
-SRCDIRS = src2
 # Where are your external header files?
-INCDIRS = ../TestLibrary/inc ../TestLibrary2/inc
+INCDIRS = ../TestLibrary/inc ../TestLibrary2
 # Where are your external libraries?
 LIBDIRS = ../TestLibrary ../TestLibrary2
 # What are your libraries named?
@@ -28,13 +26,13 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIRS)/*.c)
+SOURCES = $(wildcard $(SRCDIR)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
-OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SOURCES)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(NAME).exe
@@ -42,21 +40,19 @@ else
 	TARGET = $(NAME)
 endif
 
-MKDIR = mkdir -Force
-dir_guard = $(MKDIR) $(@D)
-
-.PHONY: all clean directories
+.PHONY: all clean folders directories
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
 
-$(OBJECTS): $(SOURCES)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
 
+folders: directories
 directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
 $(SRCDIR) $(INCDIR) $(OBJDIR):
 	mkdir $@

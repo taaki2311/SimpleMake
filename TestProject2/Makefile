@@ -42,18 +42,19 @@ else
 	TARGET = $(NAME)
 endif
 
-.PHONY: all clean directories
+.PHONY: all clean folders directories
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
 
-$(OBJECTS): $(SOURCES)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
 
+folders: directories
 directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
 $(SRCDIR) $(INCDIR) $(OBJDIR):
 	mkdir $@
