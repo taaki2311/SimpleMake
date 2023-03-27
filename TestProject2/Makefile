@@ -3,11 +3,13 @@
 # Compiler
 CC = gcc
 
-# Where are your source files?
+# Where are your internal source files?
 SRCDIR = src
 # Where are your internal header files?
 INCDIR = inc
 
+# Where are your external source files?
+SRCDIRS = 
 # Where are your external header files?
 INCDIRS = 
 # Where are your external libraries?
@@ -26,13 +28,13 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIR)/*.c)
+SOURCES = $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
-OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SOURCES)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(NAME).exe
