@@ -34,13 +34,15 @@ OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
 
 TARGET = $(EXECDIR)/$(NAME)
 
-.PHONY: all
+.PHONY: all clean exec
 all: $(OBJECTS)
 	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $(TARGET)
 
 $(OBJDIR)/%.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-.PHONY: clean
 clean:
 	$(RM) $(OBJECTS) $(EXECDIR)/*
+
+exec:
+	./$(EXECDIR)/$(NAME)
