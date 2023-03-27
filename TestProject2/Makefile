@@ -9,11 +9,11 @@ SRCDIR = src
 INCDIR = inc
 
 # Where are your external header files?
-INCDIRS = ../TestLibrary/inc ../TestLibrary2
+INCDIRS = 
 # Where are your external libraries?
-LIBDIRS = ../TestLibrary ../TestLibrary2
+LIBDIRS = 
 # What are your libraries named?
-LIBNAMES = TestLibrary TestLibrary2
+LIBNAMES = 
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root directory
@@ -27,20 +27,19 @@ EXECDIR = exec
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(addsuffix /*.c, $(SRCDIR)))
+SOURCES = $(wildcard $(SRCDIR)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
-OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 TARGET = $(EXECDIR)/$(NAME)
 
 .PHONY: all clean execute directories
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
-
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
