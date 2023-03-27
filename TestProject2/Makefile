@@ -41,6 +41,7 @@ else
 endif
 
 .PHONY: all clean directories
+
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
