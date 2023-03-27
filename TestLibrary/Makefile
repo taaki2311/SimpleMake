@@ -24,11 +24,17 @@ OBJDIR = obj
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 STATIC = lib$(NAME).a
 DYNAMIC = lib$(NAME).so
+
 SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIRS))
+
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LIBS = $(addprefix -l, $(LIBNAMES))
+
+OBJDIRS = $(addprefix $(OBJDIR)/, $(dir $(SOURCES)))
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+
+MKDIR = mkdir
 
 .PHONY: all static dynamic clean directories
 all: static dynamic
@@ -40,6 +46,10 @@ $(STATIC): $(OBJECTS)
 dynamic: $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS)
 	$(CC) $? -shared $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@
+
+$(OBJECTS): $(OBJDIRS)
+$(OBJDIRS):
+	$(MKDIR) "$@"
 
 $(OBJDIR)/%.o: %.c
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
