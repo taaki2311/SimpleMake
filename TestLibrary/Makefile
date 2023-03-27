@@ -36,7 +36,7 @@ LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LIBS = $(addprefix -l, $(LIBNAMES))
 OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
 
-.PHONY: all static dynamic clean
+.PHONY: all static dynamic clean directories
 all: static dynamic
 
 static: $(STATIC)
@@ -52,3 +52,7 @@ $(OBJECTS): $(SOURCES)
 
 clean:
 	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
+
+directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
+$(SRCDIR) $(INCDIR) $(OBJDIR):
+	$(MKDIR) $@
