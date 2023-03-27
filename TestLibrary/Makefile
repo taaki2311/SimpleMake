@@ -22,14 +22,8 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-ifeq ($(OS), Windows_NT)
-	EXTENTION = dll
-else
-	EXTENTION = so
-endif
-
 STATIC = lib$(NAME).a
-DYNAMIC = lib$(NAME).$(EXTENTION)
+DYNAMIC = lib$(NAME).so
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIR))
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
@@ -55,4 +49,4 @@ clean:
 
 directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
 $(SRCDIR) $(INCDIR) $(OBJDIR):
-	$(MKDIR) $@
+	mkdir $@
