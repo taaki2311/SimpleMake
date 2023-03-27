@@ -8,8 +8,6 @@ SRCDIR = src
 # Where are your internal header files?
 INCDIR = inc
 
-# Where are your external source files?
-SRCDIRS = 
 # Where are your external header files?
 INCDIRS = 
 # Where are your external libraries?
@@ -28,7 +26,7 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIRS)/*.c)
+SOURCES = $(wildcard $(SRCDIR)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))

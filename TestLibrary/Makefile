@@ -45,7 +45,7 @@ $(STATIC): $(OBJECTS)
 
 dynamic: $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS)
-	$(CC) -shared $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $?
+	$(CC) $? -shared $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@
 
 $(OBJECTS): $(SOURCES)
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
