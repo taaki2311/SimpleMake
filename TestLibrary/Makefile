@@ -29,7 +29,7 @@ SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
-LIBS = $(addprefix -l, $(LIBNAMES))
+LDLIBS = $(addprefix -l, $(LIBNAMES))
 
 OBJDIRS = $(addprefix $(OBJDIR)/, $(dir $(SOURCES)))
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
@@ -40,12 +40,12 @@ else
 	MKDIR = mkdir --parents
 endif
 
-.PHONY: all static dynamic clean directories
+.PHONY: all static dynamic clean directories test
 all: static dynamic
 
 static: $(STATIC)
 $(STATIC): $(OBJECTS)
-	$(AR) $(ARFLAGS) $(LIBS) $@ $?
+	$(AR) $(ARFLAGS) $(LDLIBS) $@ $?
 
 dynamic: $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS)
@@ -56,11 +56,14 @@ $(OBJDIRS):
 	$(MKDIR) "$@"
 
 $(OBJDIR)/%.o: %.c
-	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
+	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
 
 directories: $(SRCDIRS) $(INCDIRS) $(OBJDIR)
 $(SRCDIRS) $(INCDIRS) $(OBJDIR):
-	$(MKDIR) $@
+	$(MKDIR) "$@"
+
+test:
+	$(info $(OBJECTS))
