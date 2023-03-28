@@ -6,11 +6,11 @@ CC = gcc
 # Where are your source files?
 SRCDIRS = src
 # Where are your header files? (Including the ones for external libraries)
-INCDIRS = inc 
+INCDIRS = inc ../TestLibrary/inc
 # Where are your external libraries?
-LIBDIRS =
+LIBDIRS = ..TestLibrary/build/static
 # What are your libraries named?
-LIBNAMES =
+LIBNAMES = TestLibrary
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root directory
