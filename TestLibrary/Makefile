@@ -34,7 +34,11 @@ LIBS = $(addprefix -l, $(LIBNAMES))
 OBJDIRS = $(addprefix $(OBJDIR)/, $(dir $(SOURCES)))
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
 
-MKDIR = mkdir
+ifeq ($(OS), Windows_NT)
+	MKDIR = mkdir
+else
+	MKDIR = mkdir --parents
+endif
 
 .PHONY: all static dynamic clean directories
 all: static dynamic
