@@ -48,7 +48,7 @@ else
 	MKDIR = mkdir --parents
 endif
 
-.PHONY: all static dynamic clean directories test
+.PHONY: all static dynamic clean directories
 all: static dynamic
 
 static: $(STATIC)
@@ -72,6 +72,3 @@ clean:
 directories: $(DIRECTORIES)
 $(DIRECTORIES):
 	$(MKDIR) "$@"
-
-test:
-	$(info $(OBJECTS))

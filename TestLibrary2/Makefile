@@ -6,11 +6,11 @@ CC = gcc
 # Where are your source files?
 SRCDIRS = src
 # Where are your header files? (Including the ones for external libraries)
-INCDIRS = inc inc/spacer ../TestLibrary/inc
+INCDIRS = inc 
 # Where are your external libraries?
-LIBDIRS = ../TestLibrary
+LIBDIRS =
 # What are your libraries named?
-LIBNAMES = TestLibrary
+LIBNAMES =
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root directory
@@ -18,12 +18,18 @@ NAME = $(notdir $(CURDIR))
 # Note: The actual file will be called 'lib<NAME>.a', however when you are
 # linking it in a project the compiler will need just '-l<NAME>'.
 
-# Where do want to store the object files? Default: obj
-OBJDIR = obj
+# Where do you want the build outputs? Default: build
+BUILDDIR = build
+# Where do want to store the object files? Default: $(BUILDDIR)/obj
+OBJDIR = $(BUILDDIR)/obj
+# Where do you want the static library? Default: $(BUILDDIR)/static
+STATICDIR = $(BUILDDIR)/static
+# Where do you want the dynamic library? Default: $(BUILDDIR)/dynamic
+DYNAMICDIR = $(BUILDDIR)/dynamic
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-STATIC = lib$(NAME).a
-DYNAMIC = lib$(NAME).so
+STATIC = $(STATICDIR)/lib$(NAME).a
+DYNAMIC = $(DYNAMICDIR)/lib$(NAME).so
 
 SOURCES = $(wildcard $(SRCDIRS)/*.c)
 INCLUDES = $(addprefix -I, $(INCDIRS))
@@ -33,6 +39,8 @@ LDLIBS = $(addprefix -l, $(LIBNAMES))
 
 OBJDIRS = $(addprefix $(OBJDIR)/, $(dir $(SOURCES)))
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+
+DIRECTORIES = $(SRCDIRS) $(INCDIRS) $(BUILDDIR) $(STATICDIR) $(DYNAMICDIR) $(OBJDIR)
 
 ifeq ($(OS), Windows_NT)
 	MKDIR = mkdir
@@ -45,22 +53,22 @@ all: static dynamic
 
 static: $(STATIC)
 $(STATIC): $(OBJECTS)
-	$(AR) $(ARFLAGS) $(LDLIBS) $@ $?
+	$(AR) $(ARFLAGS) $@ $?
 
 dynamic: $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS)
-	$(CC) $? -shared $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@
+	$(CC) $^ -shared $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@
 
 $(OBJECTS): $(OBJDIRS)
 $(OBJDIRS):
 	$(MKDIR) "$@"
 
 $(OBJDIR)/%.o: %.c
-	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
+	$(CC) -pie $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
 
-directories: $(SRCDIRS) $(INCDIRS) $(OBJDIR)
-$(SRCDIRS) $(INCDIRS) $(OBJDIR):
+directories: $(DIRECTORIES)
+$(DIRECTORIES):
 	$(MKDIR) "$@"
