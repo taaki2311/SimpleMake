@@ -3,13 +3,10 @@
 # Compiler
 CC = gcc
 
-# Where are your internal source files?
-SRCDIR = src
-# Where are your internal header files?
-INCDIR = inc
-
-# Where are your external header files?
-INCDIRS = ../TestLibrary/inc ../TestLibrary2
+# Where are your source files?
+SRCDIRS = src src/hello
+# Where are your header files?
+INCDIRS = inc ../TestLibrary/inc ../TestLibrary2/
 # Where are your external libraries?
 LIBDIRS = ../TestLibrary ../TestLibrary2
 # What are your libraries named?
@@ -26,33 +23,35 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIR)/*.c)
-INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
+SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
+INCLUDES = $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
-OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SOURCES)))
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJDIRS = $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(NAME).exe
+	MKDIR = mkdir
 else
 	TARGET = $(NAME)
+	MKDIR = mkdir --parents
 endif
 
-.PHONY: all clean folders directories
+.PHONY: all clean test
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
-	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
+	$(CC) $^ $(LDLIBS) $(LDFLAGS) -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
+$(OBJECTS):$(OBJDIRS)
+$(OBJDIRS):
+	$(MKDIR) "$@"
+
+$(OBJDIR)/%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
-
-folders: directories
-directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
-$(SRCDIR) $(INCDIR) $(OBJDIR):
-	mkdir $@

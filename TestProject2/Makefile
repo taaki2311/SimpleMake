@@ -26,33 +26,39 @@ NAME = $(notdir $(CURDIR))
 OBJDIR = obj
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-SOURCES = $(wildcard $(SRCDIR)/*.c)
+SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
 INCLUDES = $(addprefix -I, $(INCDIR)) $(addprefix -I, $(INCDIRS))
 
 LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
-OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SOURCES)))
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJDIRS = $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(NAME).exe
+	MKDIR = mkdir
 else
 	TARGET = $(NAME)
+	MKDIR = mkdir --parents
 endif
 
-.PHONY: all clean folders directories
+.PHONY: all clean directories
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
-	$(CC) $? $(LDLIBS) $(LDFLAGS) -o $@
+	$(CC) $^ $(LDLIBS) $(LDFLAGS) -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $? -o $@
+$(OBJECTS):$(OBJDIRS)
+$(OBJDIRS):
+	$(MKDIR) "$@"
+
+$(OBJDIR)/%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
 
-folders: directories
 directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
 $(SRCDIR) $(INCDIR) $(OBJDIR):
-	mkdir $@
+	mkdir "$@"
