@@ -45,7 +45,7 @@ all: static dynamic
 
 static: $(STATIC)
 $(STATIC): $(OBJECTS)
-	$(AR) $(ARFLAGS) $(LDLIBS) $@ $?
+	$(AR) $(ARFLAGS) $@ $?
 
 dynamic: $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS)
