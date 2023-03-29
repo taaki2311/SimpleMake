@@ -40,7 +40,7 @@ else
 	MKDIR = mkdir --parents
 endif
 
-.PHONY: all clean test
+.PHONY: all clean
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
@@ -55,6 +55,3 @@ $(OBJDIR)/%.o: %.c
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
-
-test:
-	$(info $(OS))
