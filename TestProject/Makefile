@@ -55,3 +55,6 @@ $(OBJDIR)/%.o: %.c
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
+
+test:
+	$(info $(OS))
