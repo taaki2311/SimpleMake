@@ -8,7 +8,7 @@ SRCDIRS = .
 # Where are your header files? (Including the ones for external libraries)
 INCDIRS = . inc/spacer ../TestLibrary/inc
 # Where are your external libraries?
-LIBDIRS = ..TestLibrary/
+LIBDIRS = ../TestLibrary
 # What are your libraries named?
 LIBNAMES = TestLibrary
 
@@ -49,7 +49,7 @@ $(OBJDIRS):
 	$(MKDIR) "$@"
 
 $(OBJDIR)/%.o: %.c
-	$(CC) -pie $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
+	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)

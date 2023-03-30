@@ -51,7 +51,7 @@ $(OBJDIRS):
 	$(MKDIR) "$@"
 
 $(OBJDIR)/%.o: %.c
-	$(CC) -pie $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
+	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
