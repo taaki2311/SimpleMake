@@ -18,11 +18,15 @@ NAME = $(notdir $(CURDIR))
 # Note: The actual file will be called 'lib<NAME>.a', however when you are
 # linking it in a project the compiler will need just '-l<NAME>'.
 
+# Where do you want your build outputs?
+BUILD_DIR = build
 # Where do want to store the object files? Default: obj
-OBJDIR = obj
+OBJDIR = $(BUILD_DIR)/obj
+#Where do you want your static library?
+STATIC_DIR = $(BUILD_DIR)/static
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-TARGET = lib$(NAME).a
+STATIC = $(STATIC_DIR)/lib$(NAME).a
 
 SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
 INCLUDES = $(addprefix -I, $(INCDIRS))
@@ -40,9 +44,9 @@ else
 endif
 
 .PHONY: all clean
-all: $(TARGET)
-$(TARGET): $(OBJECTS)
-	$(AR) $(ARFLAGS) $@ $?
+all: $(STATIC)
+$(STATIC): $(OBJECTS) $()
+	$(AR) $(ARFLAGS) $@ $<
 
 $(OBJECTS): $(OBJDIRS)
 $(OBJDIRS):
@@ -52,4 +56,4 @@ $(OBJDIR)/%.o: %.c
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJECTS) $(TARGET)
+	$(RM) $(OBJECTS) $(STATIC)
