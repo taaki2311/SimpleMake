@@ -33,15 +33,13 @@ LDLIBS = $(addprefix -l, $(LIBNAMES))
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
 OBJDIRS = $(sort $(dir $(OBJECTS)))
 
-DIRECTORIES = $(SRCDIRS) $(INCDIRS) $(OBJDIR)
-
 ifeq ($(OS), Windows_NT)
 	MKDIR = mkdir
 else
 	MKDIR = mkdir --parents
 endif
 
-.PHONY: all clean directories
+.PHONY: all clean
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $?
@@ -55,7 +53,3 @@ $(OBJDIR)/%.o: %.c
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
-
-directories: $(DIRECTORIES)
-$(DIRECTORIES):
-	$(MKDIR) "$@"

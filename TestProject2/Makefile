@@ -43,7 +43,7 @@ else
 	MKDIR = mkdir --parents
 endif
 
-.PHONY: all clean directories
+.PHONY: all clean
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
@@ -58,7 +58,3 @@ $(OBJDIR)/%.o: %.c
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)
-
-directories: $(SRCDIR) $(INCDIR) $(OBJDIR)
-$(SRCDIR) $(INCDIR) $(OBJDIR):
-	mkdir "$@"
