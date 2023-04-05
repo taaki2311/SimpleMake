@@ -6,7 +6,7 @@ CC = gcc
 # Where are your source files?
 SRCDIRS = .
 # Where are your header files? (Including the ones for external libraries)
-INCDIRS = . inc/spacer ../TestLibrary/inc
+INCDIRS = . include/spacer ../TestLibrary/include
 # Where are your external libraries?
 LIBDIRS = ../TestLibrary/build/static
 # What are your libraries named?

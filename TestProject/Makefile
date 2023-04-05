@@ -4,9 +4,9 @@
 CC = gcc
 
 # Where are your source files?
-SRCDIRS = src src/hello
+SRCDIRS = source source/hello
 # Where are your header files?
-INCDIRS = inc ../TestLibrary/inc ../TestLibrary2/
+INCDIRS = include ../TestLibrary/include ../TestLibrary2/
 # Where are your external libraries?
 LIBDIRS = ../TestLibrary/build/static ../TestLibrary2/build/dynamic
 # What are your libraries named?
@@ -20,7 +20,7 @@ NAME = $(notdir $(CURDIR))
 # linking it in a project the compiler will need just '-l<NAME>'.
 
 # Where do you want to put your object files?
-OBJDIR = obj
+OBJDIR = object
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
