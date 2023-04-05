@@ -21,12 +21,14 @@ NAME = $(notdir $(CURDIR))
 # Where do you want your build outputs?
 BUILD_DIR = build
 # Where do want to store the object files?
-OBJDIR = $(BUILD_DIR)/obj
-# Where do you want your static library?
+OBJDIR = $(BUILD_DIR)/object
+# Where do you want your libraries?
 STATIC_DIR = $(BUILD_DIR)/static
+DYNAMIC_DIR = $(BUILD_DIR)/dynamic
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 STATIC = $(STATIC_DIR)/lib$(NAME).a
+DYNAMIC = $(DYNAMIC_DIR)/lib$(NAME).so
 
 SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
 INCLUDES = $(addprefix -I, $(INCDIRS))
@@ -35,7 +37,6 @@ LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
-OBJDIRS = $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
 	MKDIR = @mkdir
@@ -44,18 +45,19 @@ else
 endif
 
 .PHONY: all clean
-all: $(STATIC)
+all: $(STATIC) $(DYNAMIC)
 
-$(STATIC): $(STATIC_DIR)
+$(DYNAMIC): $(OBJECTS)
+	$(MKDIR) $(@D)
+	$(CC) -shared $^ -o $@
+
 $(STATIC): $(OBJECTS)
+	$(MKDIR) $(@D)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(OBJECTS): $(OBJDIRS)
 $(OBJDIR)/%.o: %.c
+	$(MKDIR) $(@D)
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJECTS) $(STATIC)
-
-$(OBJDIRS) $(STATIC_DIR):
-	$(MKDIR) "$@"
+	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
