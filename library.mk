@@ -24,7 +24,7 @@ $(DYNAMIC): $(OBJECTS)
 
 $(STATIC): $(OBJECTS)
 	$(MKDIR) $(@D)
-	$(AR) $(ARFLAGS) $@ ../TestLibrary/build/static/libTestLibrary.a $^
+	$(AR) $(ARFLAGS) $@ $^
 
 $(OBJ_DIR)/%.o: %.c
 	$(MKDIR) $(@D)
