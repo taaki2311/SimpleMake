@@ -8,7 +8,7 @@ SRCDIRS = source source/hello
 # Where are your header files?
 INCDIRS = include ../TestLibrary/include ../TestLibrary2/
 # Where are your external libraries?
-LIBDIRS = ../TestLibrary/build/static ../TestLibrary2/build/dynamic
+LIBDIRS = ../TestLibrary/build/static ../TestLibrary2/build/static
 # What are your libraries named?
 LIBNAMES = TestLibrary TestLibrary2
 
