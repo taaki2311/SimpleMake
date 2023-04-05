@@ -8,7 +8,7 @@ SRCDIRS = .
 # Where are your header files? (Including the ones for external libraries)
 INCDIRS = . inc/spacer ../TestLibrary/inc
 # Where are your external libraries?
-LIBDIRS = ../TestLibrary
+LIBDIRS = ../TestLibrary/build/static
 # What are your libraries named?
 LIBNAMES = TestLibrary
 
@@ -20,13 +20,15 @@ NAME = $(notdir $(CURDIR))
 
 # Where do you want your build outputs?
 BUILD_DIR = build
-# Where do want to store the object files? Default: obj
-OBJDIR = $(BUILD_DIR)/obj
-#Where do you want your static library?
+# Where do want to store the object files?
+OBJDIR = $(BUILD_DIR)/object
+# Where do you want your libraries?
 STATIC_DIR = $(BUILD_DIR)/static
+DYNAMIC_DIR = $(BUILD_DIR)/dynamic
 
 # DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 STATIC = $(STATIC_DIR)/lib$(NAME).a
+DYNAMIC = $(DYNAMIC_DIR)/lib$(NAME).so
 
 SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
 INCLUDES = $(addprefix -I, $(INCDIRS))
@@ -35,25 +37,27 @@ LDFLAGS = $(addprefix -L, $(LIBDIRS))
 LDLIBS = $(addprefix -l, $(LIBNAMES))
 
 OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
-OBJDIRS = $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
-	MKDIR = mkdir
+	MKDIR = @mkdir
 else
-	MKDIR = mkdir --parents
+	MKDIR = @mkdir --parents
 endif
 
 .PHONY: all clean
-all: $(STATIC)
-$(STATIC): $(OBJECTS) $()
-	$(AR) $(ARFLAGS) $@ $<
+all: $(STATIC) $(DYNAMIC)
 
-$(OBJECTS): $(OBJDIRS)
-$(OBJDIRS):
-	$(MKDIR) "$@"
+$(DYNAMIC): $(OBJECTS)
+	$(MKDIR) $(@D)
+	$(CC) -shared $(LDFLAGS) $(LDLIBS) $^ -o $@
+
+$(STATIC): $(OBJECTS)
+	$(MKDIR) $(@D)
+	$(AR) $(ARFLAGS) $@ ../TestLibrary/build/static/libTestLibrary.a $^
 
 $(OBJDIR)/%.o: %.c
-	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -c $< -o $@
+	$(MKDIR) $(@D)
+	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	$(RM) $(OBJECTS) $(STATIC)
+	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)

@@ -1,7 +1,7 @@
 #include "testProject.h"
 
-#include <libTest.h>
-#include <lib2.h>
+#include "libTest.h"
+#include "lib2.h"
 
 int main(void)
 {
