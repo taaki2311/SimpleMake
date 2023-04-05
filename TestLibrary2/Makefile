@@ -4,13 +4,13 @@
 CC = gcc
 
 # Where are your source files?
-SRCDIRS = .
+SRC_DIRS = .
 # Where are your header files? (Including the ones for external libraries)
-INCDIRS = . include/spacer ../TestLibrary/include
+INC_DIRS = . include/spacer ../TestLibrary/include
 # Where are your external libraries?
-LIBDIRS = ../TestLibrary/build/static
+LIB_DIRS = ../TestLibrary/build/static
 # What are your libraries named?
-LIBNAMES = TestLibrary
+LIB_NAMES = TestLibrary
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root directory
@@ -21,7 +21,7 @@ NAME = $(notdir $(CURDIR))
 # Where do you want your build outputs?
 BUILD_DIR = build
 # Where do want to store the object files?
-OBJDIR = $(BUILD_DIR)/object
+OBJ_DIR = $(BUILD_DIR)/object
 # Where do you want your libraries?
 STATIC_DIR = $(BUILD_DIR)/static
 DYNAMIC_DIR = $(BUILD_DIR)/dynamic

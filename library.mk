@@ -1,13 +1,13 @@
 STATIC = $(STATIC_DIR)/lib$(NAME).a
 DYNAMIC = $(DYNAMIC_DIR)/lib$(NAME).so
 
-SOURCES = $(foreach SRCDIR, $(SRCDIRS), $(wildcard $(SRCDIR)/*.c))
-INCLUDES = $(addprefix -I, $(INCDIRS))
+SOURCES = $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
+INCLUDES = $(addprefix -I, $(INC_DIRS))
 
-LDFLAGS = $(addprefix -L, $(LIBDIRS))
-LDLIBS = $(addprefix -l, $(LIBNAMES))
+LDFLAGS = $(addprefix -L, $(LIB_DIRS))
+LDLIBS = $(addprefix -l, $(LIB_NAMES))
 
-OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(SOURCES))
+OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
 ifeq ($(OS), Windows_NT)
 	MKDIR = @mkdir
@@ -26,7 +26,7 @@ $(STATIC): $(OBJECTS)
 	$(MKDIR) $(@D)
 	$(AR) $(ARFLAGS) $@ ../TestLibrary/build/static/libTestLibrary.a $^
 
-$(OBJDIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c
 	$(MKDIR) $(@D)
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
