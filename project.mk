@@ -19,11 +19,11 @@ endif
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(DIR_GUARD)
-	$(CC) -o $@ $^ $(LDFLAGS) $(LDLIBS)
+	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: %.c
 	$(DIR_GUARD)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)

@@ -9,7 +9,7 @@ LDLIBS = $(addprefix -l, $(LIB_NAMES))
 
 OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
-ARFLAGS = rs
+ARFLAGS = rsc
 
 ifeq ($(OS), Windows_NT)
 	DIR_GUARD = @mkdir "$(@D)"
@@ -22,7 +22,7 @@ all: $(STATIC) $(DYNAMIC)
 
 $(DYNAMIC): $(OBJECTS)
 	$(DIR_GUARD)
-	$(CC) -shared $(LDFLAGS) $(LDLIBS) $^ -o $@
+	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS) -shared
 
 $(STATIC): $(OBJECTS)
 	$(DIR_GUARD)
@@ -30,7 +30,7 @@ $(STATIC): $(OBJECTS)
 
 $(OBJ_DIR)/%.o: %.c
 	$(DIR_GUARD)
-	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS) -fPIC
 
 clean:
 	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
