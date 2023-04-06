@@ -1,6 +1,6 @@
-#include "println.h"
+#include "hello_world.h"
 
 int main() {
-    println("Hello, World!");
+    hello_world();
     return 0;
 }

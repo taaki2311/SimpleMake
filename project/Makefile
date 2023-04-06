@@ -1,23 +1,19 @@
-# Edit this section to suit your project
-
 # Compiler
 CC = gcc
 
 # Where are your source files?
 SRC_DIRS = source
 # Where are your header files?
-INC_DIRS = ../library/include
+INC_DIRS = ../library2/include
 # Where are your external libraries?
-LIB_DIRS = ../library/build/static
+LIB_DIRS = ../library2/build/static
 # What are your libraries named?
-LIB_NAMES = library
+LIB_NAMES = library2
 
-# What do you want to name your library?
+# What do you want to name your executable?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root
 # directory
 NAME = $(notdir $(CURDIR))
-# Note: The actual file will be called 'lib<NAME>.(a/so)', however when you are
-# linking it in a project the compiler will need just '-l<NAME>'.
 
 # Where do you want you build outputs?
 BUILD_DIR = build

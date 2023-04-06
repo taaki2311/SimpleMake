@@ -4,15 +4,15 @@ INCLUDES += $(addprefix -I, $(INC_DIRS))
 LDFLAGS += $(addprefix -L, $(LIB_DIRS))
 LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
-OBJECTS ?= $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJECTS += $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
-	TARGET = $(EXEC_DIR)/$(NAME).exe
-	DIR_GUARD = mkdir "$@"
+	TARGET ?= $(EXEC_DIR)/$(NAME).exe
+	DIR_GUARD? = mkdir "$@"
 else
-	TARGET = $(EXEC_DIR)/$(NAME)
-	DIR_GUARD = mkdir -p $@
+	TARGET ?= $(EXEC_DIR)/$(NAME)
+	DIR_GUARD ?= mkdir -p $@
 endif
 
 .PHONY: all clean
