@@ -21,7 +21,7 @@ else
 	DIR_GUARD ?= mkdir -p $@
 endif
 
-.PHONY: all clean test
+.PHONY: all clean
 all: $(STATIC) $(DYNAMIC)
 
 $(DYNAMIC): $(OBJECTS) | $(DYNAMIC_DIR)
