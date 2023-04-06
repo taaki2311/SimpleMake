@@ -9,6 +9,8 @@ LDLIBS = $(addprefix -l, $(LIB_NAMES))
 
 OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
+ARFLAGS = rs
+
 ifeq ($(OS), Windows_NT)
 	MKDIR = @mkdir
 else

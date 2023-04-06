@@ -19,7 +19,7 @@ endif
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(MKDIR) $(@D)
-	$(CC) $(LDFLAGS) $(LDLIBS) $^ -o $@
+	$(CC) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ_DIR)/%.o: %.c
 	$(MKDIR) $(@D)
