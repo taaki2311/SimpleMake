@@ -1,11 +1,11 @@
-SOURCES = $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
-INCLUDES = $(addprefix -I, $(INC_DIRS))
+SOURCES += $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
+INCLUDES += $(addprefix -I, $(INC_DIRS))
 
-LDFLAGS = $(addprefix -L, $(LIB_DIRS))
-LDLIBS = $(addprefix -l, $(LIB_NAMES))
+LDFLAGS += $(addprefix -L, $(LIB_DIRS))
+LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
-OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
-OBJ_DIRS = $(sort $(dir $(OBJECTS)))
+OBJECTS ?= $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(EXEC_DIR)/$(NAME).exe
