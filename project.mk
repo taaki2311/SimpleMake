@@ -8,21 +8,21 @@ OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(EXEC_DIR)/$(NAME).exe
-	MKDIR = @mkdir
+	DIR_GUARD = @mkdir "$(@D)"
 else
 	TARGET = $(EXEC_DIR)/$(NAME)
-	MKDIR = @mkdir --parents
+	DIR_GUARD = @mkdir -p $(@D)
 endif
 
 .PHONY: all clean
 
 all: $(TARGET)
 $(TARGET): $(OBJECTS)
-	$(MKDIR) $(@D)
+	$(DIR_GUARD)
 	$(CC) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ_DIR)/%.o: %.c
-	$(MKDIR) $(@D)
+	$(DIR_GUARD)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:

@@ -12,24 +12,24 @@ OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 ARFLAGS = rs
 
 ifeq ($(OS), Windows_NT)
-	MKDIR = @mkdir
+	DIR_GUARD = @mkdir "$(@D)"
 else
-	MKDIR = @mkdir --parents
+	DIR_GUARD = @mkdir -p $(@D)
 endif
 
 .PHONY: all clean
 all: $(STATIC) $(DYNAMIC)
 
 $(DYNAMIC): $(OBJECTS)
-	$(MKDIR) $(@D)
+	$(DIR_GUARD)
 	$(CC) -shared $(LDFLAGS) $(LDLIBS) $^ -o $@
 
 $(STATIC): $(OBJECTS)
-	$(MKDIR) $(@D)
+	$(DIR_GUARD)
 	$(AR) $(ARFLAGS) $@ $^
 
 $(OBJ_DIR)/%.o: %.c
-	$(MKDIR) $(@D)
+	$(DIR_GUARD)
 	$(CC) -fPIC $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
