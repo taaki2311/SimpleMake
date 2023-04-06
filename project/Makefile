@@ -1,4 +1,4 @@
-# Compiler
+# Toolchain
 CC = gcc
 
 # Where are your source files?

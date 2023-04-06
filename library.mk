@@ -13,8 +13,6 @@ LDLIBS += $(addprefix -l, $(LIB_NAMES))
 OBJECTS += $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
 OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 
-ARFLAGS = rsc
-
 ifeq ($(OS), Windows_NT)
 	DIR_GUARD ?= mkdir "$@"
 else
