@@ -5,25 +5,28 @@ LDFLAGS = $(addprefix -L, $(LIB_DIRS))
 LDLIBS = $(addprefix -l, $(LIB_NAMES))
 
 OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJ_DIRS = $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET = $(EXEC_DIR)/$(NAME).exe
-	DIR_GUARD = @mkdir "$(@D)"
+	DIR_GUARD = mkdir "$@"
 else
 	TARGET = $(EXEC_DIR)/$(NAME)
-	DIR_GUARD = @mkdir -p $(@D)
+	DIR_GUARD = mkdir -p $@
 endif
 
 .PHONY: all clean
 
 all: $(TARGET)
-$(TARGET): $(OBJECTS)
-	$(DIR_GUARD)
+$(TARGET): $(OBJECTS) | $(EXEC_DIR)
 	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: %.c
-	$(DIR_GUARD)
 	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
+
+$(OBJECTS): $(OBJ_DIRS)
+$(OBJ_DIRS) $(EXEC_DIR):
+	$(DIR_GUARD)
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)

@@ -8,29 +8,31 @@ LDFLAGS = $(addprefix -L, $(LIB_DIRS))
 LDLIBS = $(addprefix -l, $(LIB_NAMES))
 
 OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJ_DIRS = $(sort $(dir $(OBJECTS)))
 
 ARFLAGS = rsc
 
 ifeq ($(OS), Windows_NT)
-	DIR_GUARD = @mkdir "$(@D)"
+	DIR_GUARD = mkdir "$@"
 else
-	DIR_GUARD = @mkdir -p $(@D)
+	DIR_GUARD = mkdir -p $@
 endif
 
-.PHONY: all clean
+.PHONY: all clean test
 all: $(STATIC) $(DYNAMIC)
 
-$(DYNAMIC): $(OBJECTS)
-	$(DIR_GUARD)
+$(DYNAMIC): $(OBJECTS) | $(DYNAMIC_DIR)
 	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS) -shared
 
-$(STATIC): $(OBJECTS)
-	$(DIR_GUARD)
+$(STATIC): $(OBJECTS) | $(STATIC_DIR)
 	$(AR) $(ARFLAGS) $@ $^
 
 $(OBJ_DIR)/%.o: %.c
-	$(DIR_GUARD)
 	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS) -fPIC
+
+$(OBJECTS): $(OBJ_DIRS)
+$(OBJ_DIRS) $(STATIC_DIR) $(DYNAMIC_DIR):
+	$(DIR_GUARD)
 
 clean:
 	$(RM) $(OBJECTS) $(STATIC) $(DYNAMIC)
