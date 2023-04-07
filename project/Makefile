@@ -4,11 +4,11 @@ CC = gcc
 # Where are your source files?
 SRC_DIRS = source
 # Where are your header files?
-INC_DIRS = ../library2/include
+INC_DIRS = ../library2/include ../library
 # Where are your external libraries?
-LIB_DIRS = ../library2/build/static
+LIB_DIRS = ../library2/build/static ../library/build/static
 # What are your libraries named?
-LIB_NAMES = library2
+LIB_NAMES = library2 library
 
 # What do you want to name your executable?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root

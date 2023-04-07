@@ -25,7 +25,7 @@ all: $(STATIC) $(DYNAMIC)
 $(DYNAMIC): $(OBJECTS) | $(DYNAMIC_DIR)
 	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS) -shared
 
-$(STATIC): $(OBJECTS) | $(STATIC_DIR)
+$(STATIC): $(OBJECTS) $(STATIC_LIBS) | $(STATIC_DIR)
 	$(AR) $(ARFLAGS) $@ $^
 
 $(OBJ_DIR)/%.o: %.c
