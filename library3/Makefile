@@ -15,9 +15,8 @@ NAME = $(notdir $(CURDIR))
 # Note: The actual file will be called 'lib<NAME>.(a/so)', however when you are
 # linking it in a project the compiler will need just '-l<NAME>'
 
-# Where do you want to put your object files?
+# Where do you want to put your build outputs?
 OBJ_DIR = object
-# Where do you want your libraries?
 STATIC_DIR = static
 DYNAMIC_DIR = dynamic
 
