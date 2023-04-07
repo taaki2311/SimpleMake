@@ -9,7 +9,7 @@ OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 
 ifeq ($(OS), Windows_NT)
 	TARGET ?= $(EXEC_DIR)/$(NAME).exe
-	DIR_GUARD? = mkdir "$@"
+	DIR_GUARD ?= mkdir "$@"
 else
 	TARGET ?= $(EXEC_DIR)/$(NAME)
 	DIR_GUARD ?= mkdir -p $@
