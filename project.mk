@@ -15,6 +15,8 @@ else
 	DIR_GUARD ?= mkdir -p $@
 endif
 
+CC ?= gcc
+
 .PHONY: all clean
 
 all: $(TARGET)

@@ -19,6 +19,9 @@ else
 	DIR_GUARD ?= mkdir -p $@
 endif
 
+CC ?= gcc
+RANLIB ?= ranlib
+
 .PHONY: all clean
 all: $(STATIC) $(DYNAMIC)
 
@@ -27,6 +30,7 @@ $(DYNAMIC): $(OBJECTS) | $(DYNAMIC_DIR)
 
 $(STATIC): $(OBJECTS) $(STATIC_LIBS) | $(STATIC_DIR)
 	$(AR) $(ARFLAGS) $@ $^
+	$(RANLIB) $@
 
 $(OBJ_DIR)/%.o: %.c
 	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS) -fPIC

@@ -1,7 +1,3 @@
-# Toolchain
-CC = gcc
-ARFLAGS = rsc
-
 # Where are your source files?
 SRC_DIRS = 
 SOURCES = println.c

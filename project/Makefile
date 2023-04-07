@@ -1,6 +1,3 @@
-# Toolchain
-CC = gcc
-
 # Where are your source files?
 SRC_DIRS = source
 # Where are your header files?
