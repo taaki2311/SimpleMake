@@ -15,4 +15,7 @@ NAME = $(notdir $(CURDIR))
 OBJ_DIR = object
 EXEC_DIR = executable
 
+# Toolchain Variables
+CC = gcc
+
 include ../project.mk

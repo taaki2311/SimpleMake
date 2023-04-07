@@ -19,4 +19,7 @@ OBJ_DIR = object
 STATIC_DIR = static
 DYNAMIC_DIR = dynamic
 
+# Toolchain Variables
+CC = gcc
+
 include ../library.mk

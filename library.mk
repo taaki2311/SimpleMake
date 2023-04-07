@@ -20,8 +20,6 @@ else
 	DIR_GUARD ?= mkdir --parents $@
 endif
 
-CC ?= gcc
-AR ?= ar
 RANLIB ?= ranlib
 
 .PHONY: all clean
