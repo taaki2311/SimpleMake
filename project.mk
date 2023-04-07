@@ -1,7 +1,10 @@
 SOURCES += $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
 INCLUDES += $(addprefix -I, $(INC_DIRS))
 
-LDFLAGS += $(addprefix -L, $(LIB_DIRS))
+LDFLAGS += \
+	$(addprefix -L, $(STATIC_LIB_DIRS)) \
+	$(addprefix -L, $(DYNAMIC_LIB_DIRS)) \
+	-Wl,$(addprefix -R, $(DYNAMIC_LIB_DIRS))
 LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
 OBJECTS += $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
