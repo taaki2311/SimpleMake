@@ -1,12 +1,12 @@
 # Where are your source files?
 SRC_DIRS = source
 # Where are your header files?
-INC_DIRS = ../library2/include ../library3/include
+INC_DIRS = ../library3/include
 # Where are your external libraries?
 STATIC_LIB_DIRS = 
-DYNAMIC_LIB_DIRS = ../library2/dynamic ../library3/dynamic
+DYNAMIC_LIB_DIRS = ../library3/dynamic
 # What are your libraries named?
-LIB_NAMES = library2 library3
+LIB_NAMES = library3
 
 # What do you want to name your executable?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root

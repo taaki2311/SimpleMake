@@ -4,10 +4,11 @@ DYNAMIC ?= $(DYNAMIC_DIR)/lib$(NAME).so
 SOURCES += $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
 INCLUDES += $(addprefix -I, $(INC_DIRS))
 
-LIB_DIRS += $(dir $(STATIC_LIBS))
+LIB_DIRS += $(dir $(STATIC_LIBS)) $(DYNAMIC_LIB_DIRS)
 LIB_NAMES += $(patsubst lib%.a, %, $(notdir $(STATIC_LIBS)))
 
-LDFLAGS += $(addprefix -L, $(LIB_DIRS))
+COMMA := ,
+LDFLAGS += $(addprefix -L, $(LIB_DIRS)) $(addprefix -Wl$(COMMA)-R, $(DYNAMIC_LIB_DIRS))
 LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
 OBJECTS += $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
