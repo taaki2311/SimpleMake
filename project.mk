@@ -1,7 +1,7 @@
 SOURCES += $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
 INCLUDES += $(addprefix -I, $(INC_DIRS))
 
-COMMA = ,
+COMMA := ,
 LDFLAGS += \
 	$(addprefix -L, $(STATIC_LIB_DIRS)) \
 	$(addprefix -L, $(DYNAMIC_LIB_DIRS)) \
@@ -16,7 +16,7 @@ ifeq ($(OS), Windows_NT)
 	DIR_GUARD ?= mkdir "$@"
 else
 	TARGET ?= $(EXEC_DIR)/$(NAME)
-	DIR_GUARD ?= mkdir -p $@
+	DIR_GUARD ?= mkdir --parents $@
 endif
 
 CC ?= gcc

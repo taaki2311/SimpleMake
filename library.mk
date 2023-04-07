@@ -16,7 +16,7 @@ OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 ifeq ($(OS), Windows_NT)
 	DIR_GUARD ?= mkdir "$@"
 else
-	DIR_GUARD ?= mkdir -p $@
+	DIR_GUARD ?= mkdir --parents $@
 endif
 
 CC ?= gcc
@@ -26,14 +26,14 @@ RANLIB ?= ranlib
 all: $(STATIC) $(DYNAMIC)
 
 $(DYNAMIC): $(OBJECTS) | $(DYNAMIC_DIR)
-	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS) -shared
+	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS) -shared -fpic
 
 $(STATIC): $(OBJECTS) $(STATIC_LIBS) | $(STATIC_DIR)
 	$(AR) $(ARFLAGS) $@ $^
 	$(RANLIB) $@
 
 $(OBJ_DIR)/%.o: %.c
-	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS) -fPIC
+	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
 
 $(OBJECTS): $(OBJ_DIRS)
 $(OBJ_DIRS) $(STATIC_DIR) $(DYNAMIC_DIR):
