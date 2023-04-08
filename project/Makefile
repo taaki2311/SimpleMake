@@ -12,8 +12,8 @@ LIB_NAMES = library3
 NAME = $(notdir $(CURDIR))
 
 # Where do you want to put your build outputs?
-OBJ_DIR = object
-EXEC_DIR = executable
+OBJ_DIR = build/object
+EXEC_DIR = build/executable
 
 # Toolchain Variables
 CC = gcc

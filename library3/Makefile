@@ -16,9 +16,9 @@ NAME = $(notdir $(CURDIR))
 # linking it in a project the compiler will need just '-l<NAME>'
 
 # Where do you want to put your build outputs?
-OBJ_DIR = object
-STATIC_DIR = static
-DYNAMIC_DIR = dynamic
+OBJ_DIR = build/object
+STATIC_DIR = build/static
+DYNAMIC_DIR = builddynamic
 
 # Toolchain Variables
 CC = gcc

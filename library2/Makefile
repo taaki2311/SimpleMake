@@ -13,10 +13,10 @@ NAME = $(notdir $(CURDIR))
 # linking it in a project the compiler will need just '-l<NAME>'.
 
 # Where do you want to put your object files?
-OBJ_DIR = object
+OBJ_DIR = build/object
 # Where do you want your libraries?
-STATIC_DIR = static
-DYNAMIC_DIR = dynamic
+STATIC_DIR = build/static
+DYNAMIC_DIR = build/dynamic
 
 # Toolchain Variables
 CC = gcc
