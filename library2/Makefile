@@ -3,7 +3,7 @@ SRC_DIRS = source
 # Where are your header files?
 INC_DIRS = include ../library
 
-STATIC_LIBS = ../library/static/liblibrary.a
+STATIC_LIBS = ../library/build/static/liblibrary.a
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root

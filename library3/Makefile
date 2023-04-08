@@ -7,8 +7,8 @@ INC_DIRS = include ../library2/include
 STATIC_LIBS = 
 # Where are your dynamic libraries
 # Does not support linking dynamic libraries into static libraries
-DYNAMIC_LIB_DIRS = ../library2/dynamic
-LIB_NAMES = library2
+DYNAMIC_LIB_DIRS = ../library2/build/dynamic
+DYNAMIC_LIB_NAMES = library2
 
 # What do you want to name your library?
 NAME = $(notdir $(CURDIR))
@@ -18,7 +18,7 @@ NAME = $(notdir $(CURDIR))
 # Where do you want to put your build outputs?
 OBJ_DIR = build/object
 STATIC_DIR = build/static
-DYNAMIC_DIR = builddynamic
+DYNAMIC_DIR = build/dynamic
 
 # Toolchain Variables
 CC = gcc

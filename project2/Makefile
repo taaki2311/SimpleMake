@@ -2,11 +2,11 @@
 SRC_DIRS = 
 SOURCES = main.c
 # Where are your header files?
-INC_DIRS = ../library3/include
+INC_DIRS = ../library
 # Where are your external libraries?
 STATIC_LIB_DIRS = 
-DYNAMIC_LIB_DIRS = ../library3/build/dynamic
-DYNAMIC_LIB_NAMES = library3
+DYNAMIC_LIB_DIRS = ../library/build/dynamic
+LIB_NAMES = library
 
 # What do you want to name your executable?
 NAME = $(notdir $(CURDIR))

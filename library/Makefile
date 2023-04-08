@@ -1,10 +1,5 @@
 # Where are your source files?
-SRC_DIRS = 
 SOURCES = println.c
-# Where are your header files?
-INC_DIRS = .
-
-STATIC_LIBS = 
 
 # What do you want to name your library?
 # Default: $(notdir $(CURDIR)), this makes the name the same as the root
