@@ -1,7 +1,7 @@
 SOURCES += $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.c))
 INCLUDES += $(addprefix -I, $(INC_DIRS))
 
-LDFLAGS += $(addprefix -L, $(STATIC_LIB_DIRS)) $(addprefix -L, $(DYNAMIC_LIB_DIRS)) \
+LDFLAGS += $(addprefix -L, $(STATIC_LIB_DIRS)) $(addprefix -L, $(DYNAMIC_LIB_DIRS))
 LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
 ifeq ($(OS), Windows_NT)
@@ -24,6 +24,7 @@ $(TARGET): $(OBJECTS) | $(EXEC_DIR)
 	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: %.c
+	$(info $(INCLUDES))
 	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
 
 $(OBJECTS): $(OBJ_DIRS)
