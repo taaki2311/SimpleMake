@@ -1,6 +1,7 @@
-#include "lib3.h"
+#include "project.h"
 
-int main() {
-    hello_from_lib3();
+int main()
+{
+    hello_world();
     return 0;
 }

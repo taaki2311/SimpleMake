@@ -1,16 +1,23 @@
 # Where are your source files?
-SOURCES = println.c
+SRC_DIRS = 
+SOURCES = source/println.c
+# Where are your header files?
+INC_DIRS = include
+
+# Where are you static libraries? Give the path and full filename
+STATIC_LIBS = 
+# Where are your dynamic libraries
+# Does not support linking dynamic libraries into static libraries
+DYNAMIC_LIB_DIRS = 
+DYNAMIC_LIB_NAMES = 
 
 # What do you want to name your library?
-# Default: $(notdir $(CURDIR)), this makes the name the same as the root
-# directory
 NAME = $(notdir $(CURDIR))
 # Note: The actual file will be called 'lib<NAME>.(a/so)', however when you are
-# linking it in a project the compiler will need just '-l<NAME>'.
+# linking it in a project the compiler will need just '-l<NAME>'
 
-# Where do you want to put your object files?
+# Where do you want to put your build outputs?
 OBJ_DIR = build/object
-# Where do you want your libraries?
 STATIC_DIR = build/static
 DYNAMIC_DIR = build/dynamic
 
