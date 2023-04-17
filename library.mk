@@ -1,8 +1,8 @@
 ifeq ($(OS), Windows_NT)
-	DIR_GUARD ?= mkdir "$@"
+	DIR_GUARD ?= @mkdir "$@"
 	EXTENTION ?= dll
 else
-	DIR_GUARD ?= mkdir --parents $@
+	DIR_GUARD ?= @mkdir --parents $@
 	EXTENTION ?= so
 endif
 

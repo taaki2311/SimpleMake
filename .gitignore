@@ -4,3 +4,5 @@
 *.lib
 *.dll
 *.so
+
+project/build/project

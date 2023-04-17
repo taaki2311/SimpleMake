@@ -6,10 +6,10 @@ LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
 ifeq ($(OS), Windows_NT)
 	TARGET ?= $(EXEC_DIR)/$(NAME).exe
-	DIR_GUARD ?= mkdir "$@"
+	DIR_GUARD ?= @mkdir "$@"
 else
 	TARGET ?= $(EXEC_DIR)/$(NAME)
-	DIR_GUARD ?= mkdir --parents $@
+	DIR_GUARD ?= @mkdir --parents $@
 	COMMA := ,
 	LDFLAGS += $(addprefix -Wl$(COMMA)-R, $(DYNAMIC_LIB_DIRS))
 endif
