@@ -11,7 +11,7 @@ else
 	TARGET ?= $(EXEC_DIR)/$(NAME)
 	DIR_GUARD ?= mkdir --parents $@
 	COMMA := ,
-	$(addprefix -Wl$(COMMA)-R, $(DYNAMIC_LIB_DIRS))
+	LDFLAGS += $(addprefix -Wl$(COMMA)-R, $(DYNAMIC_LIB_DIRS))
 endif
 
 TEMP_OBJECTS += $(patsubst %.c, %.o, $(SOURCES))

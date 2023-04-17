@@ -1,6 +1,6 @@
 # Where are your source files?
-SRC_DIRS = source
-SOURCES = main.c
+SRC_DIRS = 
+SOURCES = main.c source/project.c
 # Where are your header files?
 INC_DIRS = include
 # Where are your external libraries?
