@@ -14,8 +14,8 @@ else
 	LDFLAGS += $(addprefix -Wl$(COMMA)-R, $(DYNAMIC_LIB_DIRS))
 endif
 
-TEMP_OBJECTS += $(patsubst %.c, %.o, $(SOURCES))
-OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(TEMP_OBJECTS)))
+OBJECTS += $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 
 .PHONY: all clean
 
@@ -23,12 +23,12 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS) | $(EXEC_DIR)
 	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 
-%.o: %.c
-	$(CC) -o $(OBJ_DIR)/$(@F) -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
+$(OBJ_DIR)/%.o: %.c
+	$(info $(INCLUDES))
+	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
 
-$(OBJECTS): $(TEMP_OBJECTS)
-$(TEMP_OBJECTS): $(OBJ_DIR)
-$(OBJ_DIR) $(EXEC_DIR):
+$(OBJECTS): $(OBJ_DIRS)
+$(OBJ_DIRS) $(EXEC_DIR):
 	$(DIR_GUARD)
 
 clean:

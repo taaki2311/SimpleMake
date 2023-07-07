@@ -19,8 +19,8 @@ COMMA := ,
 LDFLAGS += $(addprefix -L, $(LIB_DIRS)) $(addprefix -Wl$(COMMA)-R, $(DYNAMIC_LIB_DIRS))
 LDLIBS += $(addprefix -l, $(LIB_NAMES))
 
-TEMP_OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
-OBJECTS += $(addprefix $(OBJ_DIR)/, $(notdir $(TEMP_OBJECTS)))
+OBJECTS += $(patsubst %.c, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJ_DIRS ?= $(sort $(dir $(OBJECTS)))
 
 RANLIB ?= ranlib
 
@@ -34,12 +34,11 @@ $(STATIC): $(OBJECTS) $(STATIC_LIBS) | $(STATIC_DIR)
 	$(AR) $(ARFLAGS) $@ $^
 	$(RANLIB) $@
 
-%.o: %.c
-	$(CC) -o $(OBJ_DIR)/$(@F) -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
+$(OBJ_DIR)/%.o: %.c
+	$(CC) -o $@ -c $< $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
 
-$(OBJECTS): $(TEMP_OBJECTS)
-$(TEMP_OBJECTS): $(OBJ_DIR)
-$(OBJ_DIR) $(STATIC_DIR) $(DYNAMIC_DIR):
+$(OBJECTS): $(OBJ_DIRS)
+$(OBJ_DIRS) $(STATIC_DIR) $(DYNAMIC_DIR):
 	$(DIR_GUARD)
 
 clean:
